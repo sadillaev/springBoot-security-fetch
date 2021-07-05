@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,19 +23,18 @@ public class ServiceSecurity implements UserDetailsService {
         this.userService = userService;
     }
 
-
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 
-        User user = userService.findByUsername(s);
+        User user = userService.findByEmail(s);
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
         for (Role role : user.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),
+        return new org.springframework.security.core.userdetails.User(user.getEmail(),
                 user.getPassword(), grantedAuthorities);
     }
 }

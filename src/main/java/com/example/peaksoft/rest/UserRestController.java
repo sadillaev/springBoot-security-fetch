@@ -5,6 +5,7 @@ import com.example.peaksoft.service.RoleService;
 import com.example.peaksoft.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.*;
@@ -31,10 +32,12 @@ public class UserRestController {
         }
     }
 
+    @CrossOrigin
     @GetMapping("/user")
-    public ResponseEntity<User> getById(Principal principal) {
+    public ResponseEntity<User> getUser(Authentication authentication) {
         try {
-            return new ResponseEntity<>(userService.getByName(principal.getName()), HttpStatus.OK);
+            System.out.println(authentication.getName());
+            return new ResponseEntity<>(userService.findByEmail(authentication.getName()), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -62,7 +65,18 @@ public class UserRestController {
     @PutMapping
     public ResponseEntity<User> update(@RequestBody User user) {
         try{
-            return new ResponseEntity<>(userService.updateUser(user), HttpStatus.OK);
+            Set<Role> rolesFromBD = new HashSet<>();
+            rolesFromBD.add(roleService.getRoleByName("ROLE_USER"));
+            User userObj = new User();
+            userObj.setId(user.getId());
+            userObj.setName(user.getName());
+            userObj.setLastName(user.getLastName());
+            userObj.setEmail(user.getEmail());
+            userObj.setPassword(user.getPassword());
+            userObj.setAddress(user.getAddress());
+            userObj.setAge(user.getAge());
+            userObj.setRoles(rolesFromBD);
+            return new ResponseEntity<>(userService.updateUser(userObj), HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

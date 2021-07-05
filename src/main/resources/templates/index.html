@@ -15,9 +15,7 @@
                 <li class="nav-item">
                     <button class="btn btn-outline-success" data-toggle="modal" data-target="admin">Admin page</button>
                 </li>
-                <li class="nav-item">
-                    <button class="btn btn-outline-success" data-toggle="modal" data-target="#addUser">add new user</button>
-                </li>
+
                 <li class="nav-item">
                     <button class="btn btn-outline-success" data-toggle="modal" data-target="#"><a href="/user">user page</a></button>
                 </li>
@@ -32,6 +30,9 @@
     <h1>Users table</h1>
 </div>
 <div class="container">
+    <li class="nav-item">
+        <button class="btn btn-outline-success" data-toggle="modal" data-target="#addUser">add new user</button>
+    </li>
     <table id="users_table" class="table table-hover table-striped">
 
 
@@ -160,10 +161,17 @@ async function getAllUsers() {
             <th scope="col">email</th>
             <th scope="col">address</th>
             <th scope="col">age</th>
+            <th scope="col">role</th>
             <th scope="col">update</th>
             <th scope="col">delete</th>
             </tr>`;
             users.forEach(u => {
+                let userRole = '';
+                for (let i = 0; i < u.roles.length; i++) {
+                    userRole += `${u.roles[i].role}`
+                }
+                console.log(users)
+                console.log(userRole)
                 li += `
                 <tr>
                 <td>${u.id}</td>
@@ -172,6 +180,7 @@ async function getAllUsers() {
                 <td id="emailValue${u.id}">${u.email}</td>
                 <td id="addressValue${u.id}">${u.address}</td>
                 <td id="ageValue${u.id}">${u.age}</td>
+                <td id="ageValue${u.id}">${userRole}</td>
                 <td><button onclick="getUserdata(${u.id})" class="btn btn-outline-success" data-toggle="modal" data-target="#updateUser">edit</button>
 </td>
                 <td data-id="${u.id}"><a href="#" class="card-link" id="delete-user" >delete</a></td>

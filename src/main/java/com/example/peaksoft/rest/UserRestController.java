@@ -48,15 +48,8 @@ public class UserRestController {
         try {
             Set<Role> rolesFromBD = new HashSet<>();
             rolesFromBD.add(roleService.getRoleByName("ROLE_USER"));
-            User userObj = new User();
-            userObj.setName(user.getName());
-            userObj.setLastName(user.getLastName());
-            userObj.setEmail(user.getEmail());
-            userObj.setPassword(user.getPassword());
-            userObj.setAddress(user.getAddress());
-            userObj.setAge(user.getAge());
-            userObj.setRoles(rolesFromBD);
-            return new ResponseEntity<>(userService.save(userObj), HttpStatus.OK);
+            user.setRoles(rolesFromBD);
+            return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -67,16 +60,8 @@ public class UserRestController {
         try{
             Set<Role> rolesFromBD = new HashSet<>();
             rolesFromBD.add(roleService.getRoleByName("ROLE_USER"));
-            User userObj = new User();
-            userObj.setId(user.getId());
-            userObj.setName(user.getName());
-            userObj.setLastName(user.getLastName());
-            userObj.setEmail(user.getEmail());
-            userObj.setPassword(user.getPassword());
-            userObj.setAddress(user.getAddress());
-            userObj.setAge(user.getAge());
-            userObj.setRoles(rolesFromBD);
-            return new ResponseEntity<>(userService.updateUser(userObj), HttpStatus.OK);
+            user.setRoles(rolesFromBD);
+            return new ResponseEntity<>(userService.updateUser(user), HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
